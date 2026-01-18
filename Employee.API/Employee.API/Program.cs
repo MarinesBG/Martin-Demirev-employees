@@ -1,3 +1,4 @@
+using Employee.API.Filters;
 using Employee.Mapping.Extensions;
 using Employee.Services.Extensions;
 using Microsoft.OpenApi.Models;
@@ -14,6 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Employee API", Version = "v1" });
+    c.OperationFilter<FormFileOperationFilter>();
 });
 
 var app = builder.Build();
