@@ -39,6 +39,8 @@ A full-stack application for analyzing employee collaboration patterns from CSV 
 - [Visual Studio 2022](https://visualstudio.microsoft.com/) or [VS Code](https://code.visualstudio.com/)
 
 ## 📁 Project Structure
+
+```
 Martin-Demirev-employees/
 ├── Employee/                          # .NET backend
 │   ├── Employee.API/                  # Web API project
@@ -68,6 +70,7 @@ Martin-Demirev-employees/
 ├── docker-compose.yml                 # Production docker-compose
 ├── docker-compose.dev.yml             # Development docker-compose
 └── README.md                          # Repo README / dev instructions
+```
 
 ## 🐳 Quick Start with Docker
 
@@ -236,7 +239,7 @@ GET /health
 
 
 ### HTTP Status Codes
-
+```
 | Code | Description |
 |------|-------------|
 | 200 | Success |
@@ -244,7 +247,7 @@ GET /health
 | 413 | Payload Too Large (file > 10MB) |
 | 499 | Client Closed Request (upload cancelled) |
 | 500 | Internal Server Error |
-
+```
 ## 📄 CSV Format
 
 ### Required Format
@@ -256,14 +259,14 @@ EmpID,ProjectID,DateFrom,DateTo
 
 
 ### Field Descriptions
-
+```
 | Field | Type | Description | Example |
 |-------|------|-------------|---------|
 | **EmpID** | Integer | Employee ID | `1` |
 | **ProjectID** | Integer | Project ID | `10` |
 | **DateFrom** | Date | Start date | `2020-01-01` |
 | **DateTo** | Date | End date (NULL = today) | `2020-12-31` |
-
+```
 ### Supported Date Formats
 
 - `yyyy-MM-dd` (ISO 8601): `2020-01-01`
@@ -297,7 +300,7 @@ EmpID,ProjectID,DateFrom,DateTo
 ## 🏗️ Architecture
 
 ### Backend Architecture
-
+```
 ──────────────────────────────────────────────
 │           Employee.API (Web API)           │
 │  - Controllers                             │
@@ -325,7 +328,7 @@ EmpID,ProjectID,DateFrom,DateTo
 │  - Interfaces (IWorkCalculationService,    │
 │                ICsvParser<>, IDateParser)  │
 └────────────────────────────────────────────┘
-
+```
 
 ### Technologies & Patterns
 
