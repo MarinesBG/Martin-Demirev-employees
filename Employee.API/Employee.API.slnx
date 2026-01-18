@@ -1,3 +1,9 @@
 <Solution>
   <Project Path="Employee.API/Employee.API.csproj" />
+  <Project Path="Employee.Contracts/Employee.Contracts.csproj" />
+  <Project Path="Employee.Domain/Employee.Domain.csproj" />
+  <Project Path="Employee.IntegrationTests/Employee.IntegrationTests.csproj" />
+  <Project Path="Employee.Mapping/Employee.Mapping.csproj" />
+  <Project Path="Employee.Services/Employee.Services.csproj" />
+  <Project Path="Employee.Tests/Employee.Tests.csproj" />
 </Solution>
