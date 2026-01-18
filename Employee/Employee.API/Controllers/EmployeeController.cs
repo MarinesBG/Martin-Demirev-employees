@@ -48,7 +48,7 @@ namespace Employee.API.Controllers
                 }
 
                 var result = _mapper.Map<ResultViewModel>(calculationResult);
-                return Ok(result);
+                return Ok(result.TopPair);
             }
             catch (FormatException fe)
             {

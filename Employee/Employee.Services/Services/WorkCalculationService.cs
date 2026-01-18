@@ -107,6 +107,8 @@ namespace Employee.Services.Services
 
                             pairResults[pairKey].Add(new ProjectDetail
                             {
+                                EmployeeId1 = pairKey.Item1,
+                                EmployeeId2 = pairKey.Item2,
                                 ProjectId = projectId,
                                 DaysWorked = daysWorked,
                                 StartDate = overlapStart,

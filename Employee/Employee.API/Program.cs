@@ -14,6 +14,18 @@ builder.Services.AddAutoMapper();
 // Add health checks
 builder.Services.AddHealthChecks();
 
+// Add CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("https://localhost:3000")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -31,6 +43,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Use CORS - MUST be before UseAuthorization
+app.UseCors("AllowFrontend");
 
 app.UseAuthorization();
 

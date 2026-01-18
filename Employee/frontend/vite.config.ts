@@ -8,7 +8,11 @@ export default defineConfig({
     host: '127.0.0.1',
     port: 3000,
     proxy: {
-      '/api': 'http://localhost:5013'
+      '/api': {
+        target: 'https://localhost:7009',
+        changeOrigin: true,
+        secure: false
+      }
     }
   }
 });
