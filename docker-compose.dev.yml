@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  employee-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    volumes:
+      - ./Employee:/src
+    ports:
+      - "5000:8080"
+      - "5001:8081"
+
+  employee-frontend:
+    command: npm run dev -- --host
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "3000:5173"
+    environment:
+      - VITE_API_URL=http://localhost:5000

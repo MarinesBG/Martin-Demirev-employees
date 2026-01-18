@@ -14,12 +14,22 @@ builder.Services.AddAutoMapper();
 // Add health checks
 builder.Services.AddHealthChecks();
 
+// Get allowed origins from configuration or environment
+var allowedOrigins = builder.Configuration.GetSection("CORS:AllowedOrigins")
+    .Get<string[]>() ?? new[] 
+    { 
+        "http://localhost:3000",
+        "http://localhost:5173",
+        "http://localhost:80",
+        "http://localhost"
+    };
+
 // Add CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("https://localhost:3000")
+        policy.WithOrigins(allowedOrigins)
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
@@ -42,7 +52,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// Only use HTTPS redirection in Development and Production, not in Testing or Docker
+if (!app.Environment.IsEnvironment("Testing"))
+{
+    app.UseHttpsRedirection();
+}
 
 // Use CORS - MUST be before UseAuthorization
 app.UseCors("AllowFrontend");

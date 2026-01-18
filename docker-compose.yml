@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  employee-api:
+    build:
+      context: ./Employee
+      dockerfile: Employee.API/Dockerfile
+    container_name: employee-api
+    ports:
+      - "5000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development  # Development mode for Swagger
+      - ASPNETCORE_URLS=http://+:8080
+      - CORS__AllowedOrigins=http://localhost:3000,http://localhost:80,http://localhost
+    networks:
+      - employee-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  employee-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: employee-frontend
+    ports:
+      - "80:80"
+    environment:
+      - VITE_API_URL=http://localhost:5000
+    depends_on:
+      - employee-api
+    networks:
+      - employee-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  employee-network:
+    driver: bridge
+
+volumes:
+  api-data:
