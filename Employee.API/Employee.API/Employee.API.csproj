@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Employee.Contracts\Employee.Contracts.csproj" />
+    <ProjectReference Include="..\Employee.Mapping\Employee.Mapping.csproj" />
     <ProjectReference Include="..\Employee.Services\Employee.Services.csproj" />
   </ItemGroup>
 

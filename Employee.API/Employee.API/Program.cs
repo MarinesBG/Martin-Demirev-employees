@@ -1,3 +1,4 @@
+using Employee.Mapping.Extensions;
 using Employee.Services.Extensions;
 using Microsoft.OpenApi.Models;
 
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddEmployeeServices();
+builder.Services.AddAutoMapper();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
