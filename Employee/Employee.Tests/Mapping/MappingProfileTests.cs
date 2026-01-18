@@ -82,58 +82,6 @@ namespace Employee.Tests.Mapping
         }
 
         [Fact]
-        public void PairCalculationResult_ShouldMapTo_ResultViewModel()
-        {
-            // Arrange
-            var topPair = new PairResult
-            {
-                EmployeeIdA = 1,
-                EmployeeIdB = 2,
-                TotalDays = 366,
-                Projects = new List<ProjectDetail>()
-            };
-
-            var source = new PairCalculationResult
-            {
-                TopPair = topPair,
-                AllPairs = new List<PairResult> { topPair }
-            };
-
-            // Act
-            var result = _mapper.Map<ResultViewModel>(source);
-
-            // Assert
-            result.Should().NotBeNull();
-            result.TopPair.Should().NotBeNull();
-            result.TopPair.EmployeeIdA.Should().Be(1);
-            result.TopPair.EmployeeIdB.Should().Be(2);
-            result.AllPairs.Should().HaveCount(1);
-            result.TotalPairsFound.Should().Be(1);
-            result.Message.Should().Contain("Employees 1 and 2 worked together for 366 days");
-        }
-
-        [Fact]
-        public void PairCalculationResult_WithNullTopPair_ShouldMapWithNoPairsMessage()
-        {
-            // Arrange
-            var source = new PairCalculationResult
-            {
-                TopPair = null!,
-                AllPairs = new List<PairResult>()
-            };
-
-            // Act
-            var result = _mapper.Map<ResultViewModel>(source);
-
-            // Assert
-            result.Should().NotBeNull();
-            result.TopPair.Should().BeNull();
-            result.AllPairs.Should().BeEmpty();
-            result.TotalPairsFound.Should().Be(0);
-            result.Message.Should().Be("No pairs found");
-        }
-
-        [Fact]
         public void PairResult_WithEmptyProjects_ShouldMapCorrectly()
         {
             // Arrange

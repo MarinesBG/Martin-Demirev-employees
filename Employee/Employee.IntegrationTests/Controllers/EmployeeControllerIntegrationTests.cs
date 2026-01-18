@@ -25,7 +25,33 @@ namespace Employee.IntegrationTests.Controllers
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
+            
+            var responseText = await response.Content.ReadAsStringAsync();
+            responseText.Should().Contain("employeeIdA");
+            responseText.Should().Contain("employeeIdB");
+            responseText.Should().Contain("totalDays");
+            responseText.Should().NotContain("projects"); // Should NOT include projects
+        }
 
+        [Fact]
+        public async Task UploadCsv_WithValidData_WithHeader_ShouldReturnFullResponse()
+        {
+            // Arrange
+            var csvContent = @"EmpID,ProjectID,DateFrom,DateTo
+1,10,2020-01-01,2020-12-31
+2,10,2020-03-01,2020-11-30";
+
+            var content = CreateCsvFileContent(csvContent);
+
+            // Add custom header
+            Client.DefaultRequestHeaders.Add("X-Include-Projects", "true");
+
+            // Act
+            var response = await Client.PostAsync("/api/employee/upload", content);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            
             var result = await response.Content.ReadFromJsonAsync<PairResultViewModel>();
             result.Should().NotBeNull();
             result!.EmployeeIdA.Should().Be(1);
@@ -54,8 +80,7 @@ namespace Employee.IntegrationTests.Controllers
 
             var result = await response.Content.ReadFromJsonAsync<PairResultViewModel>();
             result.Should().NotBeNull();
-            result!.TotalDays.Should().Be(150); // 100 + 50
-            result.Projects.Should().HaveCount(2);
+            result!.TotalDays.Should().Be(150);
         }
 
         [Fact]

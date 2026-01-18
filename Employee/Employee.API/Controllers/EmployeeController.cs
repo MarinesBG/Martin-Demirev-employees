@@ -47,8 +47,18 @@ namespace Employee.API.Controllers
                     });
                 }
 
-                var result = _mapper.Map<ResultViewModel>(calculationResult);
-                return Ok(result.TopPair);
+                var includeProjects = Request.Headers["X-Include-Projects"].ToString() == "true";
+
+                var result = _mapper.Map<PairResultViewModel>(calculationResult.TopPair);
+
+                if (includeProjects)
+                {
+                    return Ok(result); // Full response
+                }
+                else
+                {
+                    return Ok(new { result.EmployeeIdA, result.EmployeeIdB, result.TotalDays }); // Partial response
+                }
             }
             catch (FormatException fe)
             {

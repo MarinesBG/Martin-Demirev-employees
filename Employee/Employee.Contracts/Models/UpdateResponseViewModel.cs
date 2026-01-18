@@ -1,6 +1,6 @@
 ﻿namespace Employee.Contracts.Models
 {
-    public class ResultViewModel
+    public class UpdateResponseViewModel
     {
         /// <summary>
         /// THE top pair - employees who worked together the longest

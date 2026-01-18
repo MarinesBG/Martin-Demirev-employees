@@ -68,9 +68,12 @@ export default function UploadAndGrid() {
       const fd = new FormData();
       fd.append('file', file);
       const resp = await axios.post<PairResultVM[]>('/api/employee/upload', fd, {
-        headers: { 'Content-Type': 'multipart/form-data' }
+        headers: { 
+          'Content-Type': 'multipart/form-data',
+          'X-Include-Projects': 'true'
+         }
       });
-      
+
       // Handle if response is a single object or array
       const results = Array.isArray(resp.data) ? resp.data : [resp.data];
       

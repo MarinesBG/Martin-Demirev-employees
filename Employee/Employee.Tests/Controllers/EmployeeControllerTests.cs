@@ -1,5 +1,6 @@
 using AutoMapper;
 using Employee.API.Controllers;
+using Employee.Contracts.Models;
 using Employee.Domain.Models;
 using Employee.Mapping;
 using Employee.Services.Services.Interfaces;
@@ -7,6 +8,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Primitives;
 using Moq;
 using System.Text;
 using Xunit;
@@ -24,12 +26,18 @@ namespace Employee.Tests.Controllers
         {
             _mockLogger = new Mock<ILogger<EmployeeController>>();
             _mockService = new Mock<IWorkCalculationService>();
-
+            
             // Setup real AutoMapper for testing
             var config = new MapperConfiguration(cfg => cfg.AddProfile<MappingProfile>());
             _mapper = config.CreateMapper();
-
+            
             _controller = new EmployeeController(_mockLogger.Object, _mockService.Object, _mapper);
+            
+            // Setup default HTTP context with headers
+            _controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext()
+            };
         }
 
         [Fact]
@@ -71,7 +79,7 @@ namespace Employee.Tests.Controllers
         }
 
         [Fact]
-        public async Task UploadCsv_ValidFile_ShouldReturnOkWithTopPair()
+        public async Task UploadCsv_ValidFile_WithoutHeader_ShouldReturnSummary()
         {
             // Arrange
             var csvContent = "EmpID,ProjectID,DateFrom,DateTo\n1,10,2020-01-01,2020-12-31";
@@ -91,13 +99,7 @@ namespace Employee.Tests.Controllers
                 },
                 AllPairs = new List<PairResult>
                 {
-                    new()
-                    {
-                        EmployeeIdA = 1,
-                        EmployeeIdB = 2,
-                        TotalDays = 100,
-                        Projects = new List<ProjectDetail>()
-                    }
+                    new() { EmployeeIdA = 1, EmployeeIdB = 2, TotalDays = 100, Projects = new List<ProjectDetail>() }
                 }
             };
 
@@ -110,11 +112,16 @@ namespace Employee.Tests.Controllers
             // Assert
             var okResult = result.Should().BeOfType<OkObjectResult>().Subject;
             okResult.StatusCode.Should().Be(200);
-            okResult.Value.Should().NotBeNull();
+            okResult.Value.Should().BeEquivalentTo(new
+            {
+                EmployeeIdA = 1,
+                EmployeeIdB = 2,
+                TotalDays = 100
+            });
         }
 
         [Fact]
-        public async Task UploadCsv_NoPairsFound_ShouldReturnOkWithEmptyMessage()
+        public async Task UploadCsv_NoPairsFound_ShouldReturnNoResultsMessage()
         {
             // Arrange
             var csvContent = "EmpID,ProjectID,DateFrom,DateTo\n1,10,2020-01-01,2020-12-31";
@@ -135,13 +142,13 @@ namespace Employee.Tests.Controllers
             // Assert
             var okResult = result.Should().BeOfType<OkObjectResult>().Subject;
             okResult.StatusCode.Should().Be(200);
-
-            // Use reflection to get the message property
-            var valueType = okResult.Value!.GetType();
-            var messageProperty = valueType.GetProperty("message");
-            var message = messageProperty?.GetValue(okResult.Value) as string;
-
-            message.Should().Be("No employee pairs found. Employees must work on the same project with overlapping dates.");
+            okResult.Value.Should().BeEquivalentTo(new
+            {
+                message = "No employee pairs found. Employees must work on the same project with overlapping dates.",
+                topPair = (object?)null,
+                allPairs = Array.Empty<object>(),
+                totalPairsFound = 0
+            });
         }
 
         [Fact]
