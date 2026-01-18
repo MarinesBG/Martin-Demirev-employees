@@ -57,3 +57,6 @@ app.MapHealthChecks("/health/ready");
 app.MapHealthChecks("/health/live");
 
 app.Run();
+
+// Make Program accessible to tests
+public partial class Program { }

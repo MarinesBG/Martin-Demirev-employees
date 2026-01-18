@@ -24,11 +24,11 @@ namespace Employee.Tests.Controllers
         {
             _mockLogger = new Mock<ILogger<EmployeeController>>();
             _mockService = new Mock<IWorkCalculationService>();
-            
+
             // Setup real AutoMapper for testing
             var config = new MapperConfiguration(cfg => cfg.AddProfile<MappingProfile>());
             _mapper = config.CreateMapper();
-            
+
             _controller = new EmployeeController(_mockLogger.Object, _mockService.Object, _mapper);
         }
 

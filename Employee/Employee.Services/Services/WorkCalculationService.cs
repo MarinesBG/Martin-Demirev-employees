@@ -149,6 +149,17 @@ namespace Employee.Services.Services
             // Store for later retrieval
             _lastComputedPairs = results;
 
+            // Check if results are empty before calling First()
+            if (!results.Any())
+            {
+                _logger?.LogInformation("No employee pairs found working together");
+                return new PairCalculationResult
+                {
+                    TopPair = null!,
+                    AllPairs = new List<PairResult>()
+                };
+            }
+
             // Get the top pair
             var topPair = results.First();
 
