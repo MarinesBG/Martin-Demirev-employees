@@ -1,6 +1,6 @@
 ﻿namespace Employee.Services.Services.Interfaces
 {
-    public interface IDateParser
+    public interface IDateParserService
     {
         /// <summary>
         /// Tries to parse a date string

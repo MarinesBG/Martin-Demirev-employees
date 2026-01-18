@@ -6,14 +6,14 @@ namespace Employee.Services.Services
 {
     public class WorkCalculationService : IWorkCalculationService
     {
-        private readonly ICsvParser _csvParser;
-        private readonly IDateParser _dateParser;
+        private readonly ICsvParserService _csvParser;
+        private readonly IDateParserService _dateParser;
         private readonly ILogger<WorkCalculationService>? _logger;
         private List<PairResult> _lastComputedPairs = new();
 
         public WorkCalculationService(
-            ICsvParser csvParser,
-            IDateParser dateParser,
+            ICsvParserService csvParser,
+            IDateParserService dateParser,
             ILogger<WorkCalculationService>? logger = null)
         {
             _csvParser = csvParser;

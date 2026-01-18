@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace Employee.Services.Services
 {
-    public class DateParser : IDateParser
+    public class DateParserService : IDateParserService
     {
         private static readonly string[] SupportedFormats = new[]
        {

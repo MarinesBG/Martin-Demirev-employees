@@ -9,7 +9,7 @@ using System.Text;
 namespace Employee.Services.Services
 {
 
-    public class CsvParser : ICsvParser
+    public class CsvParserService : ICsvParserService
     {
         public async Task<IEnumerable<EmployeeProjectRecord>> ParseAsync(Stream csvStream, CancellationToken cancellationToken = default)
         {

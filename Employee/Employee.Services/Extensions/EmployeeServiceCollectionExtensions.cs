@@ -9,8 +9,8 @@ namespace Employee.Services.Extensions
         public static IServiceCollection AddEmployeeServices(this IServiceCollection services)
         {
             services.AddScoped<IWorkCalculationService, WorkCalculationService>();
-            services.AddScoped<ICsvParser, CsvParser>();
-            services.AddScoped<IDateParser, DateParser>();
+            services.AddScoped<ICsvParserService, CsvParserService>();
+            services.AddScoped<IDateParserService, DateParserService>();
 
             return services;
         }
