@@ -5,5 +5,6 @@
         public int EmployeeIdA { get; set; }
         public int EmployeeIdB { get; set; }
         public int TotalDays { get; set; }
+        public List<ProjectDetail> Projects { get; set; } = new List<ProjectDetail>();
     }
 }

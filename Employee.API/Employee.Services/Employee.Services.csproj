@@ -12,4 +12,8 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Employee.Domain\Employee.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
